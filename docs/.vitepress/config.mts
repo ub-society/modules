@@ -23,6 +23,7 @@ export default defineConfig({
       },
     ],
     ["meta", { property: "og:site_name", content: "UB Society" }],
+    ["meta", { property: "og:url", content: "https://ubsc.my.id/" }],
     ["meta", { property: "og:image", content: "/og.jpg" }],
     [
       "meta",
@@ -87,12 +88,12 @@ export default defineConfig({
     },
     socialLinks: [
       { icon: "github", link: "https://github.com/ub-society" },
-      { icon: "discord", link: "https://discord.gg/" },
-      { icon: { svg: telegramSvg }, link: "https://t.me/" },
+      { icon: "discord", link: "https://discord.gg/qnNnEDc4aF" },
+      { icon: { svg: telegramSvg }, link: "https://t.me/+O-KOI0O-d0FhNDQ1" },
     ],
     footer: {
       message:
-        '<a href="https://discord.gg/" target="_blank" rel="noreferrer">Discord</a> - <a href="https://t.me/" target="_blank" rel="noreferrer">Telegram</a> - <a href="https://x.com/" target="_blank" rel="noreferrer">X</a> - <a href="https://instagram.com/" target="_blank" rel="noreferrer">Instagram</a> - <a href="https://tiktok.com/" target="_blank" rel="noreferrer">TikTok</a>',
+        '<a href="https://discord.gg/qnNnEDc4aF" target="_blank" rel="noreferrer">Discord</a> - <a href="https://t.me/+O-KOI0O-d0FhNDQ1" target="_blank" rel="noreferrer">Telegram</a> - <a href="https://x.com/ubsociety" target="_blank" rel="noreferrer">X</a> - <a href="https://www.instagram.com/ubs.community/" target="_blank" rel="noreferrer">Instagram</a> - <a href="https://www.linkedin.com/company/ub-society" target="_blank" rel="noreferrer">LinkedIn</a>',
       copyright: "Copyright © 2026 UB Society",
     },
   },
