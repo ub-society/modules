@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ub-society-modules",
+  "compatibility_date": "2026-09-07",
+  "routes": [
+    {
+      "pattern": "ubsc.my.id",
+      "custom_domain": true,
+    },
+  ],
+  "observability": {
+    "enabled": true,
+  },
+  "assets": {
+    "directory": "docs/.vitepress/dist",
+  },
+}

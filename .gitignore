@@ -4,3 +4,10 @@ dist
 docs/.vitepress/dist
 docs/.vitepress/cache
 
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
