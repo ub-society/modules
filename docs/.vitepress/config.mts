@@ -7,6 +7,9 @@ export default defineConfig({
   title: "UB Society",
   description: "United Blockchain Society - Open Web3 and blockchain education",
   cleanUrls: true,
+  sitemap: {
+    hostname: "https://ubsc.my.id",
+  },
   head: [
     ["link", { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" }],
     ["meta", { name: "theme-color", content: "#0b0b0b" }],
