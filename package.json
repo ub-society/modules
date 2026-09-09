@@ -11,7 +11,12 @@
     "preview": "pnpm run docs:build && wrangler dev"
   },
   "devDependencies": {
+    "@mdit/plugin-katex": "^1.1.1",
+    "katex": "^0.18.7",
+    "markdown-it-mathjax3": "^5.2.0",
+    "mermaid": "^11.17.2",
     "vitepress": "^1.6.4",
+    "vitepress-plugin-mermaid": "^2.0.17",
     "wrangler": "^4.129.1"
   }
 }

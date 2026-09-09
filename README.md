@@ -1,6 +1,7 @@
 # UB Society Modules
 
-UB Society provides open educational content covering distributed systems, cryptographic primitives, smart contract development, and Web3 engineering. This repository contains the source code, modular curriculum tracks, and configuration for the documentation portal.
+UB Society provides open educational content covering distributed systems, cryptographic primitives, smart contract development, and Web3 engineering.
+This repository contains the source code, modular curriculum tracks, and configuration for the documentation portal.
 
 ## Prerequisites
 
@@ -48,11 +49,16 @@ pnpm run docs:preview
 ## Repository Structure
 
 ```text
+├── .github/                 # Issue templates and pull request template
 ├── .gitignore               # Ignored build caches, dist, and node_modules
-├── .node-version             # Pinned Node.js runtime for build runners
+├── .node-version            # Pinned Node.js runtime for build runners
+├── CONTRIBUTING.md          # Contributing guidelines and writing standards
+├── LICENSE                  # MIT License
 ├── package.json             # Scripts and dependencies
-├── pnpm-workspace.yaml      # Package manager and build approvals
+├── pnpm-workspace.yaml      # Package manager configuration
 ├── README.md                # Repository documentation
+├── SECURITY.md              # Security and vulnerability reporting policy
+├── wrangler.jsonc           # Cloudflare Workers configuration
 └── docs/
     ├── .vitepress/
     │   ├── config.mts       # Site navigation, metadata, and sidebars
@@ -63,7 +69,10 @@ pnpm run docs:preview
     │   ├── favicon.svg      # Site favicon
     │   ├── logo-dark.svg    # Dark mode navbar logo
     │   ├── logo-light.svg   # Light mode navbar logo
-    │   └── og.jpg           # Open Graph and Twitter preview image
+    │   ├── og.jpg           # Open Graph and Twitter preview image
+    │   └── robots.txt       # Crawler indexing directives
+    ├── archive/             # Research notes and component sandbox
+    │   └── index.md
     ├── index.md             # Landing page
     ├── about.md             # Society mission, vision, and core pillars
     └── learn/
@@ -74,22 +83,68 @@ pnpm run docs:preview
             └── index.md
 ```
 
-## Adding Curriculum Content
+## Adding and Modifying Content
 
-To add a new module or lesson:
+Content pages and their sidebar navigation are managed through Markdown files and explicit VitePress configuration.
 
-1. Create a Markdown file in the appropriate track directory under `docs/learn/<track>/`.
-2. Write module content placing each sentence on its own line.
-3. Register the new file link in `docs/.vitepress/config.mts` under the matching track sidebar.
-4. Verify the build compiles without broken links using `pnpm run docs:build`.
+### 1. Create the Content File
 
-## Cloudflare Pages Deployment
+Add your Markdown file to the appropriate track directory, such as `docs/learn/fundamentals/01-introduction.md`.
+Ensure that each complete sentence is placed on its own line and no emojis are used.
 
-Configure your Cloudflare Pages project with the following settings:
+### 2. Configure Sidebar Navigation and Order
 
-| Setting                | Value                  |
-| ---------------------- | ---------------------- |
-| Framework preset       | None / VitePress       |
-| Build command          | `pnpm run docs:build`  |
-| Build output directory | `docs/.vitepress/dist` |
-| Root directory         | `/`                    |
+Open `docs/.vitepress/config.mts` and locate `themeConfig.sidebar`.
+Add your page link to the corresponding track items array.
+The display order in the portal matches the array order:
+
+```ts
+"/learn/fundamentals/": [
+  {
+    text: "Blockchain Fundamentals",
+    items: [
+      { text: "Track Overview", link: "/learn/fundamentals/" },
+      { text: "01. Introduction", link: "/learn/fundamentals/01-introduction" },
+    ],
+  },
+],
+```
+
+### 3. Verify Local Build
+
+Run the local build runner to ensure all internal links and formatting compile without errors:
+
+```bash
+pnpm run docs:build
+```
+
+For complete editorial, mathematical formatting, and code style standards, see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Deployment
+
+This portal is deployed to Cloudflare Workers using Static Assets mapped to `docs/.vitepress/dist`.
+Deployments are performed manually from your terminal to manage build quotas.
+
+### Manual Deployment via Wrangler
+
+Build the static output and deploy using `pnpm dlx wrangler`:
+
+```bash
+pnpm run docs:build
+pnpm dlx wrangler deploy
+```
+
+Alternatively, use the predefined package script:
+
+```bash
+pnpm run deploy
+```
+
+### Local Worker Preview
+
+To preview the worker and static assets locally using Wrangler:
+
+```bash
+pnpm run docs:build
+pnpm dlx wrangler dev
+```
