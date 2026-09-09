@@ -1,6 +1,6 @@
 # UB Society Modules
 
-UB Society provides open educational content covering distributed systems, cryptographic primitives, smart contract development, and Web3 engineering.
+UB Society provides open Web3 and blockchain education through structured learning modules covering blockchain fundamentals, smart contract development, and decentralized systems.
 This repository contains the source code, modular curriculum tracks, and configuration for the documentation portal.
 
 ## Prerequisites
