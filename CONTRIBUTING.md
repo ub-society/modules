@@ -117,8 +117,6 @@ flowchart LR
 ```
 ````
 
-```
-
 ## Pull Request Guidelines
 
 1. Create a descriptive branch from `main`.
@@ -126,5 +124,3 @@ flowchart LR
 3. Do not include agent signatures or co-author tags in commit messages.
 4. Run `pnpm run docs:build` locally to ensure there are no broken links or compilation errors.
 5. Submit your pull request using the provided pull request template.
-
-```
