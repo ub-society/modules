@@ -7,9 +7,10 @@ const telegramSvg =
 
 export default withMermaid(
   defineConfig({
-    title: "UB Society",
+    title: "UB Society | United Blockchain Society",
+    titleTemplate: ":title - UB Society",
     description:
-      "United Blockchain Society - Open Web3 and blockchain education",
+      "United Blockchain Society - Open Web3 and blockchain education. Structured learning modules covering blockchain fundamentals, smart contract development, and decentralized systems.",
     cleanUrls: true,
     markdown: {
       config: (md) => {
@@ -46,7 +47,7 @@ export default withMermaid(
         {
           property: "og:description",
           content:
-            "Open Web3 and blockchain education. Exploring distributed systems, smart contract architecture, and open-source engineering.",
+            "Open Web3 and blockchain education. Structured learning modules covering blockchain fundamentals, smart contract development, and decentralized systems.",
         },
       ],
       ["meta", { name: "twitter:card", content: "summary_large_image" }],
@@ -64,7 +65,7 @@ export default withMermaid(
         {
           name: "twitter:description",
           content:
-            "Open Web3 and blockchain education. Exploring distributed systems, smart contract architecture, and open-source engineering.",
+            "Open Web3 and blockchain education. Structured learning modules covering blockchain fundamentals, smart contract development, and decentralized systems.",
         },
       ],
       [
@@ -92,7 +93,7 @@ export default withMermaid(
         "/archive/": [
           {
             text: "Archive & Sandbox",
-            items: [{ text: "Notes & Sandbox", link: "/archive/" }],
+            items: [{ text: "Testing Suite", link: "/archive/" }],
           },
         ],
         "/learn/fundamentals/": [
@@ -124,7 +125,7 @@ export default withMermaid(
       ],
       footer: {
         message:
-          '<a href="https://discord.gg/qnNnEDc4aF" target="_blank" rel="noreferrer">Discord</a> - <a href="https://t.me/+O-KOI0O-d0FhNDQ1" target="_blank" rel="noreferrer">Telegram</a> - <a href="https://x.com/ubsociety" target="_blank" rel="noreferrer">X</a> - <a href="https://www.instagram.com/ubs.community/" target="_blank" rel="noreferrer">Instagram</a> - <a href="https://www.linkedin.com/company/ub-society" target="_blank" rel="noreferrer">LinkedIn</a>',
+          '<a href="https://discord.gg/qnNnEDc4aF" target="_blank" rel="noreferrer">Discord</a> - <a href="https://t.me/+O-KOI0O-d0FhNDQ1" target="_blank" rel="noreferrer">Telegram</a> - <a href="https://x.com/ubsociety" target="_blank" rel="noreferrer">X</a> - <a href="https://instagram.com/ubsociety_hq" target="_blank" rel="noreferrer">Instagram</a> - <a href="https://www.linkedin.com/company/ub-society" target="_blank" rel="noreferrer">LinkedIn</a>',
         copyright: "Copyright © 2026 UB Society",
       },
     },

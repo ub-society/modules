@@ -1,10 +1,11 @@
 ---
 layout: home
+titleTemplate: false
 
 hero:
   name: "UB Society"
   text: "United Blockchain Society"
-  tagline: "Open Web3 and blockchain education. Exploring distributed systems, smart contract architecture, and open-source engineering."
+  tagline: "Open Web3 and blockchain education. Structured learning modules covering blockchain fundamentals, smart contract development, and decentralized systems."
   actions:
     - theme: brand
       text: Start Learning

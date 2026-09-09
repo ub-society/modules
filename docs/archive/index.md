@@ -6,7 +6,7 @@ head:
       content: noindex, nofollow
 ---
 
-# Archive and Sandbox
+# Testing Suite
 
 This section serves as an archive for research notes, draft specifications, and visual sandbox verification.
 Use this space to test diagrams, mathematical notation, and new component layouts before integrating them into active curricula.
