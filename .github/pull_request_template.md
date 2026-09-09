@@ -3,6 +3,10 @@
 Provide a concise summary of the changes introduced in this pull request.
 Explain the motivation and context behind these updates.
 
+## Related Issue
+
+Fixes #
+
 ## Type of Change
 
 - [ ] New curriculum module or guide
