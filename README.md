@@ -48,40 +48,16 @@ pnpm run docs:preview
 
 ## Repository Structure
 
-```text
-├── .github/                 # Issue templates and pull request template
-├── .gitignore               # Ignored build caches, dist, and node_modules
-├── .node-version            # Pinned Node.js runtime for build runners
-├── CONTRIBUTING.md          # Contributing guidelines and writing standards
-├── LICENSE                  # MIT License
-├── package.json             # Scripts and dependencies
-├── pnpm-workspace.yaml      # Package manager configuration
-├── README.md                # Repository documentation
-├── SECURITY.md              # Security and vulnerability reporting policy
-├── wrangler.jsonc           # Cloudflare Workers configuration
-└── docs/
-    ├── .vitepress/
-    │   ├── config.mts       # Site navigation, metadata, and sidebars
-    │   └── theme/
-    │       ├── index.ts     # Theme extension entry point
-    │       └── custom.css   # Custom brand palette and responsive styles
-    ├── public/
-    │   ├── favicon.svg      # Site favicon
-    │   ├── logo-dark.svg    # Dark mode navbar logo
-    │   ├── logo-light.svg   # Light mode navbar logo
-    │   ├── og.jpg           # Open Graph and Twitter preview image
-    │   └── robots.txt       # Crawler indexing directives
-    ├── archive/             # Research notes and component sandbox
-    │   └── index.md
-    ├── index.md             # Landing page
-    ├── about.md             # Society mission, vision, and core pillars
-    └── learn/
-        ├── index.md         # Curriculum tracks catalog
-        ├── fundamentals/    # Blockchain Fundamentals track
-        │   └── index.md
-        └── builder/         # Builder engineering track
-            └── index.md
-```
+- `docs/`: VitePress documentation source files, articles, and curriculum modules.
+  - `docs/learn/fundamentals/`: Comprehensive conceptual and architectural curriculum covering distributed trust, cryptography, state models, and consensus.
+  - `docs/learn/builder-foundations/`: Smart contract development, testing frameworks, and application architectures.
+  - `docs/learn/protocol-engineering/`: Virtual machine internals, consensus implementations, and Layer 2 rollups.
+  - `docs/public/`: Static global brand assets, logos, and Open Graph preview images.
+  - `docs/.vitepress/`: Site configuration, navigation sidebars, theme overrides, and custom stylesheets.
+- `.github/`: Issue templates and pull request configuration.
+- `CONTRIBUTING.md`: Writing guidelines, sentence-per-line standards, and pull request procedures.
+- `SECURITY.md`: Security vulnerability disclosure policy.
+- `wrangler.jsonc`: Cloudflare Workers deployment configuration.
 
 ## Adding and Modifying Content
 
@@ -110,9 +86,16 @@ The display order in the portal matches the array order:
 ],
 ```
 
-### 3. Verify Local Build
+### 3. Store Images and Static Assets
 
-Run the local build runner to ensure all internal links and formatting compile without errors:
+- **Module Assets:** Store module-specific illustrations, diagrams, and figures in an `assets/` subfolder colocated within that module directory, such as `docs/learn/fundamentals/01-distributed-trust/assets/`.
+- **Relative Referencing:** Reference assets via relative paths in Markdown, such as `![Point Addition](./assets/ec-point-addition.svg)`.
+  Vite optimizes, hashes, and validates these links at build time.
+- **Global Assets:** Store shared brand assets, logos, and Open Graph previews in `docs/public/` and reference them with root paths, such as `/logo-dark.svg`.
+
+### 4. Verify Local Build
+
+Run the local build runner to ensure all internal links, images, and formatting compile without errors:
 
 ```bash
 pnpm run docs:build
