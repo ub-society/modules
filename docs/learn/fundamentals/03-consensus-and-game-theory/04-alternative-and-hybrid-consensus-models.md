@@ -152,19 +152,19 @@ In traditional linear blockchains (Bitcoin, Ethereum, Cosmos):
 
 ```mermaid
 flowchart LR
-    subgraph Linear Blockchain Bottleneck
+    subgraph LinearChain ["Linear Blockchain Bottleneck"]
         B1[Block 1] --> B2[Block 2] --> B3[Block 3]
         Note1["Single line: Dissemination and ordering locked together"]
     end
 
-    subgraph DAG Separation of Concerns
-        subgraph Layer 1: Data Availability (Narwhal Mempool)
+    subgraph DAG_Separation ["DAG Separation of Concerns"]
+        subgraph Layer1_DA ["Layer 1: Data Availability (Narwhal Mempool)"]
             D1[Batch A] & D2[Batch B] & D3[Batch C] & D4[Batch D]
             D1 --> D3
             D2 --> D3
             D2 --> D4
         end
-        Layer 1 --> Layer 2["Layer 2: Consensus Ordering (Bullshark / Mysticeti)<br/>Zero-Metadata Consensus on DAG Geometry"]
+        Layer1_DA --> Layer2_Consensus["Layer 2: Consensus Ordering (Bullshark / Mysticeti)<br/>Zero-Metadata Consensus on DAG Geometry"]
     end
 ```
 

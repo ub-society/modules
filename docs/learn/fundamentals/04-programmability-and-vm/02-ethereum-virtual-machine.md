@@ -1,70 +1,30 @@
-# The Ethereum Virtual Machine
+# The Ethereum Virtual Machine (EVM) Architecture
 
-The Ethereum Virtual Machine (EVM) is the execution runtime environment that powers the Ethereum World Computer.
-Every smart contract deployed to Ethereum, whether a multi-billion dollar decentralized exchange (Uniswap), a lending market (Aave), or a simple ERC-20 token, runs on top of the EVM.
+In Bitcoin, the state machine is specialized and intentionally limited: transactions consume unspent outputs (UTXOs) and evaluate lightweight Forth-like verification scripts.
+While Bitcoin scripts can verify cryptographic signatures, enforce multi-sig thresholds, and establish relative timelocks, they cannot maintain internal state variables, loop dynamically, or evaluate complex arbitrary business logic.
 
-Understanding the internal architecture of the EVM: its memory layout, storage model, execution stack, and opcode instruction set, is what separates basic smart contract programmers from proficient protocol architects and security researchers.
+In 2013, Vitalik Buterin recognized that by embedding a complete virtual machine directly inside a decentralized blockchain, the network could transform from a distributed calculator into a **global, decentralized supercomputer**.\nThat computational engine is the **Ethereum Virtual Machine (EVM)**.
 
-## What is a Virtual Machine?
+The EVM is the runtime execution environment for every smart contract deployed on Ethereum and dozens of compatible chains (such as Polygon, Avalanche C-Chain, Arbitrum, Optimism, BNB Chain, and Base).\nIt serves as a deterministic state machine: given a current world state $\\sigma$ and a valid transaction $T$, the EVM executes the transaction's bytecode and deterministically transitions the world into a new state $\\sigma'$:
 
-In standard computing, software is compiled into machine code tailored to a specific physical processor architecture (such as x86_64 for Intel/AMD chips or ARM64 for Apple Silicon).
-However, a public blockchain consists of thousands of independent validator computers running on completely different hardware, operating systems, and CPU instruction sets.
+$$f_{\\text{EVM}}(\\sigma, T) = \\sigma'$$
 
-If smart contracts were compiled directly to x86_64 machine code:
-- An ARM64 validator (such as a Raspberry Pi or modern Mac server) could not execute the bytecode.
-- Minor differences in CPU floating-point handling, memory architectures, or operating system system calls could cause different nodes to compute slightly different state outcomes, permanently breaking consensus.
+Every validating full node on Earth independently runs the exact same EVM bytecode on its local hardware, executing every instruction in lockstep to arrive at the identical cryptographic state root.
 
-To achieve **complete cross-platform determinism**, Ethereum introduced a **Virtual Machine**:
-- A virtual machine is a software-emulated computer that runs on top of the physical host computer.
-- Developers write smart contracts in high-level languages like **Solidity** or **Vyper**.
-- The compiler compiles this code into standardized, platform-independent **EVM Bytecode**.
-- Every validator runs an identical EVM execution engine (implemented in Go, Rust, C++, or Java), ensuring that executing a specific byte sequence yields the identical state modification on every machine across the globe.
+## Architectural Components of the EVM
+
+The EVM is a **quasi-Turing-complete, stack-based machine**.\nDuring execution, the EVM partitions data across six distinct physical regions, each with fundamentally different lifecycles, access costs, and performance characteristics:
 
 ```mermaid
 flowchart TD
-    Solidity[Solidity / Vyper High-Level Code] --> Compiler[solc Compiler]
-    Compiler --> Bytecode["EVM Bytecode: 0x608060405234801561001057..."]
-    Bytecode --> Node1["Intel x86 Linux Validator"]
-    Bytecode --> Node2["ARM64 Mac Validator"]
-    Bytecode --> Node3["AMD Windows Validator"]
-
-    Node1 & Node2 & Node3 --> EVM["Identical EVM Sandbox Runtime"]
-    EVM --> IdenticalResult["100% Deterministic State Output on All Nodes!"]
-```
-
-## The 256-Bit Word Architecture
-
-Standard physical CPUs operate on 32-bit or 64-bit words.
-The EVM, however, is architected natively around **256-bit words** (32 bytes):
-
-$$\text{Word Size} = 256 \text{ bits} = 32 \text{ bytes}$$
-
-### Why 256 Bits?
-
-Ethereum was engineered specifically for cryptography.
-The core primitives of modern blockchain systems:
-- SHA-256 and Keccak-256 hash digests are exactly 256 bits.
-- Elliptic curve private keys, public key coordinates, and scalar field elements on secp256k1 are 256 bits.
-- Merkle roots and storage slot keys are 256 bits.
-
-By designing the virtual machine natively around 256-bit words, the EVM can manipulate cryptographic keys, hash outputs, and token balances with maximum efficiency without requiring multi-word assembly slicing.
-The trade-off is computational efficiency: handling 256-bit arithmetic on physical 64-bit host processors requires four underlying 64-bit CPU operations per EVM arithmetic instruction.
-
-## The EVM Data Regions: Stack, Memory, Storage, and Calldata
-
-The EVM is a **quasi-Turing-complete, stack-based machine**.
-During execution, the EVM partitions data across six distinct physical regions, each with fundamentally different lifecycles, access costs, and performance characteristics:
-
-```mermaid
-flowchart TD
-    subgraph Volatile Execution Context (Cleared After Tx)
+    subgraph VolatileContext ["Volatile Execution Context (Cleared After Tx)"]
         Stack["The Stack: 1,024 Slots of 256-Bit Words (LIFO)"]
         Memory["Memory: Byte-Addressable Linear Buffer (Volatile)"]
         Calldata["Calldata: Read-Only Transaction Payload"]
         ReturnData["ReturnData: Buffer Holding Returned Bytes from Sub-calls"]
     end
 
-    subgraph Persistent State (Stored on Disk via Merkle Trie)
+    subgraph PersistentState ["Persistent State (Stored on Disk via Merkle Trie)"]
         Storage["Storage: 2^256 Slots of 256-Bit Words (Persistent Disk DB)"]
         Code["Code: Immutable Contract Bytecode ROM"]
     end
@@ -74,16 +34,14 @@ Let us examine the primary four data regions in depth:
 
 ### 1. The Stack: The Computational Engine
 
-The EVM is not a register-based machine (like modern x86 or ARM CPUs).
-It is a **stack machine** that operates on a Last-In, First-Out (LIFO) stack.
+The EVM is not a register-based machine (like modern x86 or ARM CPUs).\nIt is a **stack machine** that operates on a Last-In, First-Out (LIFO) stack.
 - **Capacity:** Exactly **1,024 items**. If an operation pushes a 1,025th item onto the stack, the EVM triggers a `Stack Overflow` exception and halts.
 - **Word Size:** Each stack slot holds exactly one 256-bit word.
-- **The 16-Slot Access Constraint ("Stack Too Deep"):** While the stack can hold 1,024 words, EVM swap and duplicate instructions (`SWAP1` through `SWAP16`, `DUP1` through `DUP16`) can only reach the top 16 items on the stack.
-  If a smart contract function attempts to manipulate more than 16 local variables simultaneously, the Solidity compiler aborts with the infamous error: `"Stack too deep"`.
+- **The 16-Slot Access Constraint ("Stack Too Deep"):** While the stack can hold 1,024 words, EVM swap and duplicate instructions (`SWAP1` through `SWAP16`, `DUP1` through `DUP16`) can only reach the top 16 items on the stack.\n  If a smart contract function attempts to manipulate more than 16 local variables simultaneously, the Solidity compiler aborts with the infamous error: `"Stack too deep"`.
 
 ```mermaid
 flowchart TD
-    subgraph Stack Evaluation of 3 + 5
+    subgraph StackEval ["Stack Evaluation of 3 + 5"]
         Step1["1. PUSH1 0x03 -> Stack: [0x03]"] --> Step2["2. PUSH1 0x05 -> Stack: [0x05, 0x03]"]
         Step2 --> Step3["3. ADD -> Pops 0x05 and 0x03, Pushes 0x08"]
         Step3 --> Step4["Stack Result: [0x08]"]
@@ -153,13 +111,13 @@ The EVM provides two primary opcodes for cross-contract interaction, each establ
 
 ```mermaid
 flowchart TD
-    subgraph Standard CALL: Isolated Context
+    subgraph Call_Isolated ["Standard CALL: Isolated Context"]
         User1[User] -->|Calls| ContractA1[Contract A]
         ContractA1 -->|CALL| ContractB1[Contract B]
         Note1["msg.sender = Contract A<br/>Storage Modified = Contract B's Storage"]
     end
 
-    subgraph DELEGATECALL: Borrowed Code / Shared Context
+    subgraph Delegatecall_Shared ["DELEGATECALL: Borrowed Code / Shared Context"]
         User2[User] -->|Calls| Proxy[Proxy Contract A]
         Proxy -->|DELEGATECALL| Implementation[Implementation Contract B]
         Note2["msg.sender = User (Preserved!)<br/>Storage Modified = Proxy Contract A's Storage!"]
@@ -190,12 +148,12 @@ The EVM provides two contract creation opcodes with fundamentally different math
 
 ```mermaid
 flowchart LR
-    subgraph CREATE: Nonce-Dependent
+    subgraph Create_Nonce ["CREATE: Nonce-Dependent"]
         Sender1[Sender Address] & Nonce[Account Nonce] --> Hash1[Keccak-256 Hash]
         Hash1 --> Addr1[Contract Address]
     end
 
-    subgraph CREATE2: Deterministic Counterfactual
+    subgraph Create2_Deterministic ["CREATE2: Deterministic Counterfactual"]
         Sender2[Deployer Address] & Salt[32-Byte Salt] & Bytecode[InitCode Hash] --> Hash2[Keccak-256 Hash with 0xff Prefix]
         Hash2 --> Addr2[Predictable Address Known Prior to Deployment!]
     end

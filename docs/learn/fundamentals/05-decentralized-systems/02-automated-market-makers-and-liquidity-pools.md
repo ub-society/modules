@@ -17,13 +17,13 @@ Instead of matching individual buyers with individual sellers via an order book,
 
 ```mermaid
 flowchart TD
-    subgraph Traditional Order Book Model
+    subgraph OrderBookModel ["Traditional Order Book Model"]
         Buyer1[Buyer A] & Buyer2[Buyer B] --> OrderBook[Central Order Book: Bids & Asks Engine]
         Seller1[Seller A] & Seller2[Seller B] --> OrderBook
         OrderBook --> DirectMatch["Requires exact overlap of Price, Size, & Time!"]
     end
 
-    subgraph Automated Market Maker (AMM) Model
+    subgraph AMM_Model ["Automated Market Maker (AMM) Model"]
         LPs[Liquidity Providers: Alice & Bob] -->|Deposit Reserves 50/50| Pool["Liquidity Pool Contract: Holds Reserves of Token X and Token Y"]
         Trader[Autonomous Trader] -->|Deposits Token X| Pool
         Pool -->|Returns Token Y via Mathematical Invariant| Trader
@@ -127,12 +127,12 @@ They describe fundamentally different phenomena:
 
 ```mermaid
 flowchart TD
-    subgraph Price Impact: Internal Pool Mechanics
+    subgraph PriceImpact ["Price Impact: Internal Pool Mechanics"]
         Size["Trade Size Relative to Pool Depth"] --> Shift["Movement Along the AMM Hyperbolic Curve"]
         Shift --> WorsePrice["Execution price worsens deterministically based on pool reserves"]
     end
 
-    subgraph Slippage: External Mempool Latency
+    subgraph SlippageDelay ["Slippage: External Mempool Latency"]
         Broadcast["User Broadcasts Tx at Time T0 (Expected Price P0)"] --> MempoolDelay["Tx Sits in Mempool for 12 Seconds"]
         MempoolDelay --> OtherTrades["Other traders' transactions execute first"]
         OtherTrades --> ActualPrice["Tx executes at Time T1 at different price P1"]

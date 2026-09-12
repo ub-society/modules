@@ -157,7 +157,7 @@ Instead, the contract stores a lightweight string pointer accessed via the **`to
 
 ```mermaid
 flowchart LR
-    Contract["ERC-721 Smart Contract"] -->|Calls tokenURI(42)| URI["ipfs://QmZtmD2tDebi... / JSON Metadata Schema"]
+    Contract["ERC-721 Smart Contract"] -->|"Calls tokenURI(42)"| URI["ipfs://QmZtmD2tDebi... / JSON Metadata Schema"]
     URI --> JSON["JSON Metadata File<br/>name: 'CyberPunk #42'<br/>attributes: [...]<br/>image: 'ipfs://QmXoyp...'"]
     JSON --> Image["High-Resolution Media File (IPFS / Arweave / Web3 Storage)"]
 ```
@@ -199,7 +199,7 @@ mapping(uint256 => mapping(address => uint256)) private _balances;
 
 ```mermaid
 flowchart TD
-    subgraph ERC-1155 Unified State
+    subgraph ERC1155_State ["ERC-1155 Unified State"]
         Contract["Single ERC-1155 Contract"]
         Contract --> Fungible["Token ID 1: Gold Coins (Balance: 1,000,000)"]
         Contract --> SemiFungible["Token ID 2: Iron Ore (Balance: 50,000)"]

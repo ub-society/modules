@@ -103,7 +103,7 @@ sequenceDiagram
     Bot->>AMM: 1. Front-run: Buy Token X (Pushes price up to Alice's max slippage)
     Victim->>AMM: 2. Alice's Trade: Executes at worst-possible slippage price
     Bot->>AMM: 3. Back-run: Sell Token X immediately at inflated price
-    Note over Bot,AMM: Bot extracts risk-free profit; Alice suffers maximum slippage
+    Note over Bot,AMM: Bot extracts risk-free profit and Alice suffers maximum slippage
 ```
 
 #### 3. Liquidations

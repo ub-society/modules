@@ -22,14 +22,14 @@ In a DAO:
 
 ```mermaid
 flowchart TD
-    subgraph Traditional Corporation
+    subgraph Corp_Model ["Traditional Corporation"]
         Shareholders1[Shareholders] --> Board[Board of Directors]
         Board --> Executive[CEO & Management]
         Executive --> Treasury1[Bank Account]
         LegalSystem["Enforced by Courts, Lawyers & Domestic Police"] -.-> Executive
     end
 
-    subgraph Decentralized Autonomous Organization (DAO)
+    subgraph DAO_Model ["Decentralized Autonomous Organization (DAO)"]
         TokenHolders[Global Token Holders] -->|Cryptographic Votes| GovernanceContract[On-Chain Governance Contract]
         GovernanceContract -->|Automated Execution| Timelock[Timelock Controller]
         Timelock -->|Direct State Mutation| Treasury2[On-Chain Multi-Million Dollar Treasury]

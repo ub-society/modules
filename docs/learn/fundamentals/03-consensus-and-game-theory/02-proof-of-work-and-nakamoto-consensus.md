@@ -94,12 +94,12 @@ To maintain a consistent, predictable monetary issuance and stable transaction c
 
 ```mermaid
 flowchart LR
-    HashrateUp[Global Hash Rate Rises] --> BlockFast[Blocks Produced in < 10 Minutes]
-    BlockFast --> Retarget[Difficulty Adjustment: Target T Decreases (Harder)]
+    HashrateUp[Global Hash Rate Rises] --> BlockFast["Blocks Produced in < 10 Minutes"]
+    BlockFast --> Retarget["Difficulty Adjustment: Target T Decreases (Harder)"]
     Retarget --> Normalize[Block Interval Returns to 10 Minutes]
 
-    HashrateDown[Global Hash Rate Drops] --> BlockSlow[Blocks Produced in > 10 Minutes]
-    BlockSlow --> RetargetDown[Difficulty Adjustment: Target T Increases (Easier)]
+    HashrateDown[Global Hash Rate Drops] --> BlockSlow["Blocks Produced in > 10 Minutes"]
+    BlockSlow --> RetargetDown["Difficulty Adjustment: Target T Increases (Easier)"]
     RetargetDown --> Normalize
 ```
 
@@ -154,8 +154,7 @@ Miners recoup their expenses through two revenue streams awarded exclusively whe
 ### The Nash Equilibrium of Honest Mining
 
 This structure forms a self-enforcing **Nash Equilibrium**:
-- If a miner includes a fraudulent transaction (such as spending coins they do not own or double-spending), full nodes and non-mining peers verify the block rules and **immediately drop the block**.
-- The fraudulent miner incurs 100 percent of the electrical cost of calculating the valid Proof of Work hash, but receives **zero coins and zero fees**.
+- If a miner includes a fraudulent transaction (such as spending coins they do not own or double-spending), full nodes and non-mining peers verify the block rules and **immediately drop the block**.\n- The fraudulent miner incurs 100 percent of the electrical cost of calculating the valid Proof of Work hash, but receives **zero coins and zero fees**.
 - Conversely, following the rules and building honestly on the longest chain guarantees that valid blocks are accepted and rewarded with high-value native currency.
 Dishonesty is rendered economically irrational by design.
 
@@ -182,7 +181,7 @@ sequenceDiagram
 
     Attacker->>Public: 1. Send $100M BTC deposit to Exchange
     Attacker->>Private: 2. Secretly mine private fork excluding the deposit
-    Exchange-->>Attacker: 3. Wait for 6 confirmations; disburse fiat cash withdrawal
+    Exchange-->>Attacker: 3. Wait for 6 confirmations and disburse fiat cash withdrawal
     Attacker->>Public: 4. Attacker broadcasts secret private chain (heavier difficulty!)
     Public->>Public: 5. Global nodes execute reorg: adopt attacker's heavier chain
     Note over Exchange,Attacker: Exchange deposit erased! Attacker kept fiat and BTC!

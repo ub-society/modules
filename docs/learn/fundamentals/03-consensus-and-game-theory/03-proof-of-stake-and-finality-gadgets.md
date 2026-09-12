@@ -41,7 +41,7 @@ Because validators do not need to liquidate rewards to pay electric utilities, t
 ### 3. Asymmetric Punitive Power (The Slashing Advantage)
 
 Suppose an adversary acquires 51 percent of the mining equipment on a Proof of Work chain and mounts a catastrophic double-spending reorganization:
-- The honest community can fork to a new mining algorithm, but the community **cannot physically reach into the attacker's warehouse to destroy their ASIC chips**.
+- The honest community can fork to a new mining algorithm, but the community **cannot physically reach into the attacker's warehouse to destroy their ASIC chips**.\
 - The attacker retains their physical machines and can attack the next algorithm or sell the hardware on secondary markets to recoup their investment.
 
 In Proof of Stake, the attacker's security asset **lives directly on the blockchain itself**:
@@ -62,10 +62,10 @@ sequenceDiagram
     participant State as Canonical World State
 
     Staker->>Dep: Deposit exactly 32 ETH + BLS Public Key
-    Dep->>Beacon: Emit Deposit Event; Enter Churn Limit Queue
-    Beacon->>Beacon: Activate Validator; Assign Slot Schedule via RANDAO
+    Dep->>Beacon: Emit Deposit Event - Enter Churn Limit Queue
+    Beacon->>Beacon: Activate Validator - Assign Slot Schedule via RANDAO
     Beacon->>Comm: Assign Proposer & Attester Roles for Epoch
-    Comm->>Beacon: Propose Block; Broadcast BLS Aggregated Attestations
+    Comm->>Beacon: Propose Block - Broadcast BLS Aggregated Attestations
     Beacon->>State: Justify & Finalize Epoch Checkpoints
 ```
 
@@ -83,7 +83,7 @@ Time on the consensus layer is divided into precise, deterministic intervals:
 
 ```mermaid
 flowchart LR
-    subgraph Epoch: 32 Slots (6.4 Minutes)
+    subgraph Epoch ["Epoch: 32 Slots (6.4 Minutes)"]
         Slot0[Slot 0: 12s] --> Slot1[Slot 1: 12s]
         Slot1 --> Slot2[Slot 2: 12s]
         Slot2 --> Dots[...]

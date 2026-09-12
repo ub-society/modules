@@ -32,13 +32,13 @@ The answer lies in how computation and verification are structured:
 
 ```mermaid
 flowchart LR
-    subgraph Visa Centralized Execution
+    subgraph Visa_Centralized ["Visa Centralized Execution"]
         User1[User] --> VisaCore[Central Visa Server Cluster]
         VisaCore --> SingleDB[(Private Master Database)]
         Note1["Single computer writes to single database.<br/>Zero consensus voting across untrusted internet."]
     end
 
-    subgraph Decentralized Blockchain Execution
+    subgraph Blockchain_Decentralized ["Decentralized Blockchain Execution"]
         User2[User] --> Gossip[Global P2P Gossip Mesh]
         Gossip --> Node1[Node in Tokyo] & Node2[Node in Berlin] & Node3[Node in New York]
         Note2["Every single transaction executed redundantly by 10,000+ independent nodes globally!"]
@@ -93,7 +93,7 @@ A monolithic blockchain forces a single blockchain layer to execute all four fou
 
 ```mermaid
 flowchart TD
-    subgraph Monolithic Blockchain: All on Single Layer (Bitcoin, Ethereum L1, Solana)
+    subgraph Monolithic ["Monolithic Blockchain: All on Single Layer (Bitcoin, Ethereum L1, Solana)"]
         F1["1. Execution: Executing smart contracts & calculating state transitions"]
         F2["2. Settlement: Finalizing transactions & resolving fraud disputes"]
         F3["3. Consensus: Ordering transactions via PoW / PoS"]
@@ -111,7 +111,7 @@ Spearheaded by researchers like Mustafa Al-Bassam (Celestia), John Adler (Fuel),
 
 ```mermaid
 flowchart TD
-    subgraph Modular Blockchain Stack
+    subgraph ModularStack ["Modular Blockchain Stack"]
         L2["Execution Layer (Layer 2 Rollups: Arbitrum, Optimism, zkSync, Base)<br/>Executes 10,000+ TPS off-chain; computes state transitions"]
         L1["Settlement & Consensus Layer (Ethereum L1)<br/>Secures finality, verifies proofs, settles disputes"]
         DA["Data Availability Layer (Ethereum EIP-4844 / Celestia / EigenDA)<br/>Guarantees raw transaction payload is published and retrievable"]

@@ -161,9 +161,34 @@ div.mermaid:hover .mermaid-expand-trigger {
   color: var(--vp-c-brand-1);
 }
 
-@media (hover: none) {
+/* Mobile & Touch View:
+   1. Move button to bottom-right in dedicated padding to eliminate content overlap
+   2. Hide text label to keep it a compact 28x28 icon button
+   3. Visible by default since touch devices lack hover */
+@media (max-width: 768px) {
+  div.mermaid {
+    padding-bottom: 28px;
+  }
+
   .mermaid-expand-trigger {
-    opacity: 0.8;
+    top: auto;
+    bottom: 4px;
+    right: 4px;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    justify-content: center;
+    opacity: 0.75;
+  }
+
+  .mermaid-expand-trigger span {
+    display: none;
+  }
+
+  .mermaid-expand-trigger:active {
+    opacity: 1;
+    border-color: var(--vp-c-brand-1);
+    color: var(--vp-c-brand-1);
   }
 }
 

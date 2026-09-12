@@ -31,14 +31,14 @@ When developers upgrade client software, the relationship between the old valida
 
 ```mermaid
 flowchart TD
-    subgraph Soft Fork: Rule Tightening (Subset)
+    subgraph SoftFork ["Soft Fork: Rule Tightening (Subset)"]
         OldSet1["All Valid Blocks under Old Rules"]
         NewSet1["Valid Blocks under New Rules"]
         NewSet1 -->|Strict Subset of| OldSet1
         LegacyNode1["Non-Upgraded Nodes: Accept New Blocks (Backward-Compatible)"]
     end
 
-    subgraph Hard Fork: Rule Expansion (Superset / Divergence)
+    subgraph HardFork ["Hard Fork: Rule Expansion (Superset / Divergence)"]
         OldSet2["Valid Blocks under Old Rules"]
         NewSet2["Valid Blocks under New Rules"]
         NewSet2 -.->|Violates / Exceeds| OldSet2
@@ -179,13 +179,13 @@ Different blockchain architectures provide fundamentally different types of fina
 
 ```mermaid
 flowchart LR
-    subgraph Probabilistic Finality: PoW
+    subgraph PoW_Finality ["Probabilistic Finality: PoW"]
         Block1["1 Block: 80% Confidence"] --> Block3["3 Blocks: 99% Confidence"]
         Block3 --> Block6["6 Blocks: Exponential Safety (~99.999%)"]
         Block6 --> BlockN["k Blocks: Reorg Probability -> 0 (Never absolute)"]
     end
 
-    subgraph Deterministic / Economic Finality: Casper PoS
+    subgraph PoS_Finality ["Deterministic / Economic Finality: Casper PoS"]
         Prop["Block Proposed"] --> Attest["2/3+ Validator Attestations"]
         Attest --> Justified["Epoch Checkpoint Justified"]
         Justified --> Finalized["Epoch Checkpoint Finalized (Cryptographically Irreversible)"]

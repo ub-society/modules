@@ -17,13 +17,13 @@ A rollup takes hundreds or thousands of transactions, executes them off-chain, *
 
 ```mermaid
 flowchart TD
-    subgraph Layer 2 Execution Environment (Arbitrum, Optimism, zkSync, Base)
+    subgraph L2_Env ["Layer 2 Execution Environment (Arbitrum, Optimism, zkSync, Base)"]
         Tx1[Tx 1] & Tx2[Tx 2] & Tx3[Tx 3] & Txn[Tx 1,000] --> Sequencer[L2 Sequencer]
         Sequencer --> FastExec["Execute Transactions Off-Chain in Sub-Seconds<br/>Throughput: 2,000+ TPS!"]
         FastExec --> Compression["Compress 1,000 Transactions into Compact Data Batch"]
     end
 
-    subgraph Layer 1 Settlement (Ethereum)
+    subgraph L1_Settlement ["Layer 1 Settlement (Ethereum)"]
         RollupContract["L1 Rollup Smart Contract (Rollup.sol)"]
         Compression -->|Single L1 Transaction: Post Data Batch + State Root| RollupContract
         RollupContract --> Security["Inherits 100% of Ethereum Multi-Billion Dollar Security!"]
@@ -124,13 +124,13 @@ Every state transition submitted to Layer 1 is accompanied by an incontrovertibl
 
 ```mermaid
 flowchart TD
-    subgraph ZK-Rollup Pipeline
+    subgraph ZK_Pipeline ["ZK-Rollup Pipeline"]
         TxBatch["Batch of 5,000 Transactions"] --> Prover["Off-Chain ZK Prover (Heavy GPU / FPGA Cluster)"]
         Prover --> Math["Generates Cryptographic Validity Proof (SNARK / STARK)<br/>Proves mathematical execution of all 5,000 transactions!"]
         Math --> CompactProof["Tiny ~300-Byte Proof Payload"]
     end
 
-    subgraph Layer 1 On-Chain Verification
+    subgraph L1_Verification ["Layer 1 On-Chain Verification"]
         VerifierContract["L1 Verifier Smart Contract"]
         CompactProof -->|Submit Proof + New State Root| VerifierContract
         VerifierContract --> VerifyExec["Executes verifyProof() in ~200,000 Gas<br/>Instant Settlement! Zero 7-Day Delay!"]

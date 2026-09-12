@@ -13,7 +13,7 @@ To understand how blockchain networks operate, we must contrast them with tradit
 
 ```mermaid
 flowchart TD
-    subgraph Traditional Client-Server Architecture
+    subgraph ClientServer ["Traditional Client-Server Architecture"]
         Server[Central Application Server / AWS Cluster]
         C1[Client 1] --> Server
         C2[Client 2] --> Server
@@ -22,7 +22,7 @@ flowchart TD
         Server -.-> SinglePoint["Single Point of Failure & Control"]
     end
 
-    subgraph Peer-to-Peer (P2P) Mesh Network
+    subgraph P2P_Mesh ["Peer-to-Peer (P2P) Mesh Network"]
         N1[Node 1] <--> N2[Node 2]
         N2 <--> N3[Node 3]
         N3 <--> N4[Node 4]
@@ -64,7 +64,7 @@ sequenceDiagram
     Note over N1: Validate Tx syntax, signature & balance
     N1->>N2: Gossip Tx
     N1->>N3: Gossip Tx
-    Note over N2,N3: Validate Tx locally; check if already seen
+    Note over N2,N3: Validate Tx locally - check if already seen
     N2->>Net: Gossip to their 8 peers
     N3->>Net: Gossip to their 8 peers
     Note over Net: Exponential propagation across the planet in O(log N)
@@ -78,35 +78,17 @@ sequenceDiagram
    - Does the transaction conform to proper byte formatting?
    - Is the digital signature mathematically authentic?
    - Are the inputs unspent, and does the sender hold sufficient funds?
-   If the transaction is invalid or malformed, Node 1 drops it immediately to protect the network from spam.
-3. **Mempool Insertion:** If valid, Node 1 inserts the transaction into its local **mempool** (memory pool of unconfirmed transactions).
-4. **Epidemic Relay:** Node 1 sends the transaction announcement to all of its connected peers (excluding the peer that just sent it).
-5. **Deduplication:** When Node 2 receives the announcement, it checks its local cache.
-   If it has already seen and processed this transaction hash, it ignores the message.
-   If it is fresh, Node 2 validates it, adds it to its mempool, and relays it to all of its peers.
+3. **Mempool Ingestion:** If valid, Node 1 adds the transaction to its local **Mempool** (memory pool of pending transactions).
+4. **Targeted Dissemination:** Node 1 sends an inventory message (`inv`) or hashes of the newly discovered transaction to its other connected peers (Node 2, Node 3).
+5. **Deduplication:** When Node 2 and Node 3 receive the gossip, they check whether they already have that transaction in their mempool.
+   If yes, they discard the message to save network bandwidth.
+   If no, they validate it, insert it into their own mempool, and gossip it to their respective peers.
+6. **Exponential Fan-Out:** In a well-connected random graph with average degree $d$, the number of informed nodes grows exponentially ($d^1, d^2, d^3...$).
+   The message reaches all $N$ nodes in $O(\log N)$ hops, achieving planetary consensus in under two seconds.
 
-### Mathematical Propagation Speed: $\mathcal{O}(\log N)$
+## Node Discovery and Routing: The Kademlia DHT
 
-Gossip dissemination exhibits logarithmic propagation latency:
-
-$$\text{Propagation Rounds} \approx \lceil \log_d N \rceil$$
-
-where $N$ is the total number of nodes in the global network and $d$ is the fanout degree (the number of peers each node forwards to).
-
-Consider a concrete example:
-Suppose a network contains $100,000$ nodes ($N = 100,000$), and each node forwards messages to 8 peers ($d = 8$).
-The number of propagation hops required to saturate the entire global network is:
-
-$$\text{Hops} = \log_8(100,000) \approx 5.5 \text{ hops}$$
-
-Within just six message hops, a transaction reaches virtually every active node on Earth.
-At an average inter-peer latency of 100 milliseconds, global saturation occurs in approximately 600 milliseconds.
-
-## Distributed Hash Tables (DHT) and Kademlia Discovery
-
-When a new node launches for the first time, it has a blank memory.
-It knows its own IP address, but it does not know the IP addresses of any other nodes in the network.
-How does a node discover peers without querying a centralized directory?
+When a new node starts up, how does it locate other blockchain nodes without a centralized master server?
 Blockchains use **Distributed Hash Tables (DHT)**, with the majority utilizing the **Kademlia** algorithm (pioneered in BitTorrent and adapted by Ethereum as `discv4` and `discv5`).
 
 ```mermaid
@@ -138,15 +120,16 @@ The XOR operation satisfies all mathematical axioms of a geometric metric space:
 Each node organizes its known peers into **k-buckets**.
 Each bucket holds up to $k$ nodes (typically $k = 16$) that share a specific bit prefix with the host node:
 - Bucket 0 holds nodes that differ in the very first bit (the farthest half of the network).
-- Bucket 1 holds nodes that share the first bit but differ in the second bit.
-- Bucket $i$ holds nodes whose distance falls in the range $[2^i, 2^{i+1}-1]$.
+- Bucket 1 holds nodes that match the first bit but differ in the second.
+- Bucket $i$ holds nodes that share an $i$-bit prefix.
 
-Because nodes keep dense knowledge of nearby nodes and sparse knowledge of distant nodes, any node can locate the IP address of any target ID in the entire network in $\mathcal{O}(\log N)$ routing steps through iterative queries.
+Because nodes prioritize keeping long-lived, reliable connections in their buckets (using least-recently-seen replacement policies), Kademlia networks resist churn (nodes constantly connecting and disconnecting).
+Finding any specific node in the network requires at most $O(\log N)$ lookup steps.
 
-### Bootstrapping the Node
+### Bootnodes and Discovery Seeding
 
-For a brand new node connecting for the very first time, it uses **Bootstrap Nodes** (bootnodes):
-- A small hardcoded list of stable, long-running community full node IP addresses embedded directly in the client source code.
+When a brand-new node boots up with an empty routing table:
+- The client software includes hardcoded fallback IP addresses known as **Bootnodes** (maintained by core developers and foundation infrastructure).
 - The new node connects to a bootnode for the first few seconds, asks for its nearest neighbors via Kademlia queries, populates its own local routing table, and immediately disconnects from the bootnode to participate in the autonomous mesh.
 
 ## Block Propagation and Network Latency Bottlenecks

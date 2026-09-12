@@ -130,7 +130,7 @@ sequenceDiagram
     Alice->>Bob: 7. Transfer coin (S, Sign(S)) for goods
     Bob->>Bank: 8. Deposit coin: Has serial number S been spent before?
     alt S is fresh
-        Bank->>Bank: Record S in spent database; Credit Bob $10
+        Bank->>Bank: Record S in spent database and credit Bob $10
         Bank-->>Bob: Transaction Approved
     else S was already recorded
         Bank-->>Bob: Reject: Double-Spending Attempted

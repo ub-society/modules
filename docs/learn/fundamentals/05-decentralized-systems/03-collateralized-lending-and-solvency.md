@@ -19,12 +19,12 @@ $$\text{Collateral Value} > \text{Borrowed Debt Value}$$
 
 ```mermaid
 flowchart TD
-    subgraph Traditional Underwritten Banking
+    subgraph Traditional_Banking ["Traditional Underwritten Banking"]
         CreditCheck["FICO Credit Score & Salary Verification"] --> UnsecuredLoan["Under-Collateralized / Unsecured Loan"]
         UnsecuredLoan --> LegalRisk["Default Risk: Enforced via Courts & Foreclosures"]
     end
 
-    subgraph Decentralized Over-Collateralized Lending
+    subgraph Decentralized_Lending ["Decentralized Over-Collateralized Lending"]
         Deposit["Deposit $15,000 in ETH Collateral"] --> SmartContract["Lending Smart Contract (Aave / MakerDAO)"]
         SmartContract --> Borrow["Borrow $10,000 in USDC Stablecoins (66% LTV)"]
         Borrow --> CodeEnforced["Solvency Guaranteed via Automated On-Chain Liquidation!"]
@@ -112,15 +112,15 @@ sequenceDiagram
     participant Pool as Aave Lending Pool
     actor Liquidator as Liquidator Bot (Searcher)
 
-    Borrower->>Pool: Deposits $10,000 ETH; Borrows $8,000 USDC (HF = 1.06)
-    Note over Oracle: ETH price drops 15% on Binance & Coinbase!
-    Oracle->>Pool: Update price feed: Alice HF drops to 0.92! (HF < 1.0)
+    Borrower->>Pool: Deposits $10,000 ETH and Borrows $8,000 USDC (HF = 1.06)
+    Note over Oracle: ETH price drops 15% on Binance and Coinbase!
+    Oracle->>Pool: Update price feed - Alice HF drops to 0.92 (unhealthy HF below 1.0)
     Liquidator->>Pool: Call liquidationCall(Alice, 4,000 USDC debt repaid)
     Pool->>Pool: 1. Burns 4,000 USDC of Alice debt (50% Close Factor)
     Pool->>Pool: 2. Seizes $4,200 of Alice ETH collateral (5% bonus!)
     Pool->>Liquidator: Transfers $4,200 in ETH to Liquidator
-    Note over Liquidator: Liquidator dumps ETH on Uniswap for $4,200 USDC -> $200 Net Profit!
-    Note over Borrower: Alice debt reduced; Health Factor restored to > 1.1!
+    Note over Liquidator: Liquidator swaps ETH on Uniswap for $4,200 USDC ($200 Net Profit!)
+    Note over Borrower: Alice debt reduced and Health Factor restored safely above 1.1!
 ```
 
 ### Concrete Numerical Walkthrough
@@ -178,7 +178,7 @@ $$U = \frac{\text{Total Borrowed Capital}}{\text{Total Deposited Capital}}$$
 
 ```mermaid
 flowchart TD
-    subgraph Kinked Interest Rate Curve
+    subgraph KinkedCurve ["Kinked Interest Rate Curve"]
         LowU["Low Utilization (U < 80%): Capital is idle<br/>Interest rate is very low (e.g. 2% to 4%) to incentivize borrowing."]
         Kink["Optimal Kink Point (U = 80%): Balance of yield and liquidity"]
         HighU["High Utilization (U > 80%): Cash pool drying up!<br/>Interest rate spikes vertically (up to 50% to 100%!)"]
