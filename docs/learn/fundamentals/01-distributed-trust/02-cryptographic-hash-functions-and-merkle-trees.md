@@ -40,10 +40,10 @@ To qualify as **cryptographically secure**, a hash function must satisfy five ri
 flowchart TD
     subgraph Core Cryptographic Guarantees
         P1["1. Determinism<br/>Same input always yields identical output"]
-        P2["2. Pre-Image Resistance<br/>One-way function: Infeasible to reverse H(x) = y"]
-        P3["3. Second Pre-Image Resistance<br/>Given x1, infeasible to find x2 where H(x1) = H(x2)"]
+        P2["2. Pre-Image Resistance (One-Way)<br/>Infeasible to invert: given y, find x where H(x) = y"]
+        P3["3. Second Pre-Image Resistance<br/>Given x1, infeasible to find x2 with H(x1) = H(x2)"]
         P4["4. Collision Resistance<br/>Infeasible to find any pair where H(a) = H(b)"]
-        P5["5. Avalanche Effect<br/>1-bit input change alters ~50% of output bits"]
+        P5["5. Avalanche Effect<br/>Flipping 1 bit changes ~50% of output bits"]
     end
 ```
 
@@ -88,24 +88,20 @@ Second pre-image resistance guarantees that once a document or transaction is ha
 
 Collision resistance is a stronger requirement: it must be computationally infeasible to find *any* arbitrary pair of distinct inputs $x_1$ and $x_2$ such that:
 
-$$H(x_1) = H(x_2)$$
+$$H(x_1) = H(x_2) \quad \text{where } x_1 \ne x_2$$
 
-Notice the distinction:
-In second pre-image resistance, the target input $x_1$ is fixed in advance by someone else.
-In collision resistance, the attacker has complete freedom to manipulate both inputs simultaneously until an arbitrary match is found.
+Notice the difference:
+- In second pre-image resistance, the attacker is challenged with a fixed, predefined target $x_1$.
+- In collision resistance, the attacker has complete freedom to find *any two colliding inputs anywhere* in the universe.
 
-#### The Birthday Paradox and Birthday Attack
+Because the domain of possible inputs is infinite ($\{0, 1\}^*$) while the output space is finite ($\{0, 1\}^n$), collisions mathematically *must exist* by the Dirichlet Pigeonhole Principle.
+However, collision resistance requires that finding a collision is computationally impossible in practice.
 
-Because the input space of a hash function is infinite ($\{0, 1\}^*$) while the output space is finite ($\{0, 1\}^{256}$), collisions must mathematically exist by the **Pigeonhole Principle**: if you put 101 pigeons into 100 holes, at least one hole must contain more than one pigeon.
-The goal of cryptography is not to prevent collisions from existing, but to make discovering one computationally impossible.
+#### The Birthday Paradox and the Square Root Bound
+In statistics, the **Birthday Paradox** demonstrates that in a room of just 23 people, the probability that two people share the same birthday exceeds 50 percent, even though there are 365 days in a year.
+Because the attacker can compare any pair among many choices, the complexity of finding a collision scales not with $2^n$, but with the square root of the keyspace:
 
-In probability theory, the **Birthday Paradox** demonstrates that in a room of just 23 people, the probability that two people share the identical birthday exceeds 50 percent.
-Even though there are 365 possible days, we are not looking for someone who shares *your* specific birthday; we are looking for *any two people* who share a birthday.
-
-For a hash function with an $n$-bit output size, finding an arbitrary collision does not require $2^n$ attempts.
-By the mathematics of the birthday problem, a collision can be found in approximately:
-
-$$\mathcal{O}\left(2^{\frac{n}{2}}\right)$$
+$$\mathcal{O}\left(2^{n/2}\right)$$
 
 For SHA-256 ($n = 256$):
 - Pre-image resistance security level: $2^{256}$ operations.
@@ -123,9 +119,13 @@ If you change a single bit in a 10-megabyte file, roughly 50 percent of the bits
 
 Consider this concrete demonstration using SHA-256:
 
-$$\text{SHA-256}(\text{"The quick brown fox jumps over the lazy dog"}) = \mathtt{d7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592}$$
+```bash
+$ echo -n "The quick brown fox jumps over the lazy dog" | sha256sum
+d7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592
 
-$$\text{SHA-256}(\text{"The quick brown fox jumps over the lazy dog."}) = \mathtt{ef530b25d4add636772a9d612e4023746ac579e27c702a4e0529131a420023f2}$$
+$ echo -n "The quick brown fox jumps over the lazy dog." | sha256sum
+ef530b25d4add636772a9d612e4023746ac579e27c702a4e0529131a420023f2
+```
 
 Adding a single period at the end of the sentence completely scrambles the output.
 No human or computer inspecting the two digests can discern that the inputs differed by only one punctuation mark.
@@ -308,10 +308,3 @@ sequenceDiagram
     Phone->>Phone: Match Computed Root against Header Merkle Root
     Note over Phone: Payment verified! No full node required.
 ```
-
-An SPV client operates through three lightweight stages:
-1. **Sync Headers Only:** The client downloads only the 80-byte block headers. At 6 blocks per hour, 80 bytes per block equates to approximately 4.2 megabytes per year, easily stored on any modern mobile device.
-2. **Verify Proof of Work:** The client verifies that each block header meets the network difficulty target and connects cryptographically to the longest chain.
-3. **Verify Transactions via Merkle Proofs:** When the user expects a payment, the client asks a full node for a Merkle proof for that transaction. The client reconstructs the root and verifies that it matches the Merkle root embedded in a confirmed header buried under several blocks of Proof of Work.
-
-Through the synergy of cryptographic hash functions and Merkle trees, blockchains decouple transaction verification from storage capacity, allowing trustless verification to scale globally.
