@@ -1,7 +1,7 @@
 # Learning Modules
 
 Welcome to the United Blockchain Society educational portal.
-Our curriculum is organized into modular tracks designed for developers and independent builders.
+Our curriculum is organized into progressive, modular tracks designed for developers and independent builders.
 
 ## Available Tracks
 
@@ -11,31 +11,45 @@ This track examines the conceptual foundations of distributed ledgers, cryptogra
 
 Topics covered:
 
-- Part 1: Foundations of Distributed Trust & Cryptography
-- Part 2: Blockchain Architecture & State Models (UTXO vs Account)
-- Part 3: Consensus Mechanisms & Game Theory (PoW, PoS & BFT)
-- Part 4: Programmability, Virtual Machines & Tooling (EVM & Oracles)
-- Part 5: Decentralized Systems: Tokens, Protocols & Governance
-- Part 6: Scalability, Layer 2 & Protocol Security (Rollups & MEV)
+- Part 1: Foundations of Distributed Trust and Cryptography
+- Part 2: Blockchain Architecture and State Models (UTXO vs Account)
+- Part 3: Consensus Mechanisms and Game Theory (PoW, PoS, and BFT)
+- Part 4: Programmability, Virtual Machines, and Tooling (EVM and Oracles)
+- Part 5: Decentralized Systems: Tokens, Protocols, and Governance
+- Part 6: Scalability, Layer 2, and Protocol Security (Rollups and MEV)
 
 [View Fundamentals Syllabus](/learn/fundamentals/)
 
-### 2. Builder Track
+### 2. Builder Foundations
 
-This track is designed for learners interested in software development and on-chain engineering.
-Familiarity with basic programming in JavaScript, TypeScript, or Python is helpful.
+This track bridges theory and code, pairing every core concept with working scripts, browser-based deployments, and minimal frontend interfaces.
 
 Topics covered:
 
-- Phase 1: Local Development Environment & Modern Tooling (Foundry)
-- Phase 2: Solidity Architecture & Low-Level Primitives
-- Phase 3: Token Standards & Contract Upgradability (UUPS)
-- Phase 4: Rigorous Testing, Fuzzing & Gas Optimization
-- Phase 5: DeFi Protocol Engineering & Oracles (AMMs & Lending)
-- Phase 6: Full-Stack dApp Development (Viem & Wagmi)
-- Phase 7: Smart Contract Security & Auditing Foundations
+- Phase 1: Cryptographic Primitives in Code (Keys, Signatures, and Wallets)
+- Phase 2: Interacting Directly with the Node (JSON-RPC, Balances, and Logs)
+- Phase 3: First Smart Contracts in Remix (Solidity Basics and Testnet Deployments)
+- Phase 4: Working with Token Standards (OpenZeppelin ERC-20 and ERC-721)
+- Phase 5: Minimal Web Interfaces (Wallet Connection, State Reads, and Writes)
+- Phase 6: Gas and Failure Modes (Reverts, Debugging, and Security Awareness)
 
-[View Builder Track](/learn/builder/)
+[View Builder Foundations Syllabus](/learn/builder-foundations/)
+
+### 3. Protocol Engineering
+
+This track covers production-grade on-chain engineering, advanced contract architecture, rigorous invariant testing with Foundry, DeFi primitives, and security auditing.
+
+Topics covered:
+
+- Phase 1: Local Development Environment and Modern Tooling (Foundry)
+- Phase 2: Solidity Architecture and Low-Level Primitives (Storage and Assembly)
+- Phase 3: Token Standards and Contract Upgradability (UUPS and Proxies)
+- Phase 4: Rigorous Testing, Fuzzing, and Gas Optimization (Forge Invariants)
+- Phase 5: DeFi Protocol Engineering and Oracles (AMMs, Staking, and Lending)
+- Phase 6: Full-Stack dApp Development (Viem, Wagmi, and Production CI/CD)
+- Phase 7: Smart Contract Security and Auditing Foundations (Slither and Aderyn)
+
+[View Protocol Engineering Syllabus](/learn/protocol-engineering/)
 
 ## Learning Approach
 

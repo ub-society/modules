@@ -102,10 +102,20 @@ export default withMermaid(
             items: [{ text: "Track Overview", link: "/learn/fundamentals/" }],
           },
         ],
-        "/learn/builder/": [
+        "/learn/builder-foundations/": [
           {
-            text: "Builder Track",
-            items: [{ text: "Track Overview", link: "/learn/builder/" }],
+            text: "Builder Foundations",
+            items: [
+              { text: "Track Overview", link: "/learn/builder-foundations/" },
+            ],
+          },
+        ],
+        "/learn/protocol-engineering/": [
+          {
+            text: "Protocol Engineering",
+            items: [
+              { text: "Track Overview", link: "/learn/protocol-engineering/" },
+            ],
           },
         ],
         "/learn/": [
