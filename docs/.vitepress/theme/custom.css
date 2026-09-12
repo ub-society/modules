@@ -84,3 +84,26 @@
     text-align: right;
   }
 }
+
+/* ==========================================================================
+   Mermaid SVG Node Clipping & Typography Fix
+   1. SVG <foreignObject> defaults to overflow: hidden, clipping bottom text
+   2. Inherited line-height inflates text height beyond Mermaid bounding box
+   ========================================================================== */
+
+.mermaid foreignObject,
+svg.mermaid foreignObject,
+svg g.node foreignObject,
+svg g.label foreignObject {
+  overflow: visible !important;
+}
+
+.mermaid foreignObject div,
+.mermaid foreignObject span,
+.mermaid foreignObject p,
+svg g.node foreignObject div,
+svg g.node foreignObject span,
+svg g.node foreignObject p {
+  line-height: 1.3 !important;
+  margin: 0 !important;
+}
