@@ -3,7 +3,7 @@ node_modules
 dist
 docs/.vitepress/dist
 docs/.vitepress/cache
-
+.zed/
 
 # wrangler files
 .wrangler

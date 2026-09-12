@@ -1,9 +1,10 @@
 import { defineConfig } from "vitepress";
 import { withMermaid } from "vitepress-plugin-mermaid";
 import { katex } from "@mdit/plugin-katex";
+import { sidebar } from "./sidebar";
 
 const telegramSvg =
-  '<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="m20.665 3.717-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701h-.002l-.313 4.674c.459 0 .661-.21.916-.457l2.199-2.138 4.574 3.38c.843.464 1.45.225 1.66-.782l2.997-14.128c.307-1.23-.469-1.788-1.282-1.393z"/></svg>';
+  '<svg role=\"img\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path fill=\"currentColor\" d=\"m20.665 3.717-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701h-.002l-.313 4.674c.459 0 .661-.21.916-.457l2.199-2.138 4.574 3.38c.843.464 1.45.225 1.66-.782l2.997-14.128c.307-1.23-.469-1.788-1.282-1.393z\"/></svg>';
 
 export default withMermaid(
   defineConfig({
@@ -89,42 +90,7 @@ export default withMermaid(
         { text: "Learn", link: "/learn/" },
         { text: "About", link: "/about" },
       ],
-      sidebar: {
-        "/archive/": [
-          {
-            text: "Archive & Sandbox",
-            items: [{ text: "Testing Suite", link: "/archive/" }],
-          },
-        ],
-        "/learn/fundamentals/": [
-          {
-            text: "Blockchain Fundamentals",
-            items: [{ text: "Track Overview", link: "/learn/fundamentals/" }],
-          },
-        ],
-        "/learn/builder-foundations/": [
-          {
-            text: "Builder Foundations",
-            items: [
-              { text: "Track Overview", link: "/learn/builder-foundations/" },
-            ],
-          },
-        ],
-        "/learn/protocol-engineering/": [
-          {
-            text: "Protocol Engineering",
-            items: [
-              { text: "Track Overview", link: "/learn/protocol-engineering/" },
-            ],
-          },
-        ],
-        "/learn/": [
-          {
-            text: "Curriculum",
-            items: [{ text: "All Tracks", link: "/learn/" }],
-          },
-        ],
-      },
+      sidebar,
       search: {
         provider: "local",
       },
@@ -135,8 +101,8 @@ export default withMermaid(
       ],
       footer: {
         message:
-          '<a href="https://discord.gg/qnNnEDc4aF" target="_blank" rel="noreferrer">Discord</a> - <a href="https://t.me/+O-KOI0O-d0FhNDQ1" target="_blank" rel="noreferrer">Telegram</a> - <a href="https://x.com/ubsociety" target="_blank" rel="noreferrer">X</a> - <a href="https://instagram.com/ubsociety_hq" target="_blank" rel="noreferrer">Instagram</a> - <a href="https://www.linkedin.com/company/ub-society" target="_blank" rel="noreferrer">LinkedIn</a>',
-        copyright: "Copyright © 2026 UB Society",
+          '<a href=\"https://discord.gg/qnNnEDc4aF\" target=\"_blank\" rel=\"noreferrer\">Discord</a> - <a href=\"https://t.me/+O-KOI0O-d0FhNDQ1\" target=\"_blank\" rel=\"noreferrer\">Telegram</a> - <a href=\"https://x.com/ubsociety\" target=\"_blank\" rel=\"noreferrer\">X</a> - <a href=\"https://instagram.com/ubsociety_hq\" target=\"_blank\" rel=\"noreferrer\">Instagram</a> - <a href=\"https://www.linkedin.com/company/ub-society\" target=\"_blank\" rel=\"noreferrer\">LinkedIn</a>',
+        copyright: "Copyright \u00a9 2026 UB Society",
       },
     },
   }),
