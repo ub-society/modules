@@ -33,7 +33,8 @@ pnpm run docs:build
 Content is organized under the `docs/` directory:
 
 - `docs/learn/fundamentals/`: Theoretical foundations, cryptographic primitives, and distributed ledger concepts.
-- `docs/learn/builder/`: Protocol engineering, smart contract development, security, and tooling.
+- `docs/learn/builder-foundations/`: Smart contract development, testing frameworks, and application architectures.
+- `docs/learn/protocol-engineering/`: Virtual machine internals, consensus implementations, and Layer 2 rollups.
 - `docs/archive/`: Internal research notes, technical specifications, and component sandbox verifications.
 
 ### 2. Create the Markdown File
@@ -116,6 +117,28 @@ flowchart LR
     A[Client] --> B[RPC Node] --> C[Mempool]
 ```
 ````
+
+### Images and Static Assets
+
+Colocate lesson illustrations and diagrams directly within their module directory:
+
+1. **Colocated Assets Folder**: Create an `assets/` subfolder alongside the Markdown files:
+   ```text
+   01-distributed-trust/
+   ├── 01-double-spending-and-digital-cash.md
+   └── assets/
+       └── merkle-tree-proof.svg
+   ```
+2. **Relative Referencing**: Link assets using relative paths starting with `./assets/`:
+   ```markdown
+   ![Merkle Proof Path](./assets/merkle-tree-proof.svg)
+   ```
+   Relative links are processed by Vite at build time, ensuring asset optimization, cache busting, and compile-time link validation.
+3. **Global Assets**: Place cross-cutting site assets (such as site logos, favicons, and social preview cards) in `docs/public/` and reference them with absolute root paths, such as `/logo-dark.svg`.
+4. **Format and Naming**:
+   - Use kebab-case naming: `<topic>-<description>.<ext>`.
+   - Prefer vector SVG files for technical schematics, flowcharts, and architecture diagrams.
+   - Use WebP or optimized PNG files for raster screenshots or photographic content.
 
 ## Pull Request Guidelines
 
